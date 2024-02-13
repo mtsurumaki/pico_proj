@@ -16,9 +16,14 @@ import time
 # ADCを行うピンの設定です。
 # GP28(ADC2)を使用します
 cds = machine.ADC(0)
+pin = machine.Pin(25)
 
 # 16bitの数値一単位での電圧値を設定します
 unit = 0.00005035477
+
+# 25ピン初期化
+pin.init( machine.Pin.OUT )
+v = False
 
 # 電圧値を100回読み込みます
 for i in range(100):
@@ -34,6 +39,9 @@ for i in range(100):
     
     # 電圧値を表示します(:.3fは少数点以下3桁を表示する設定です)
     print( "volt:" + "{:.3f}".format(volt))
+
+    pin.value(v)
+    v = not v
     
     # 1秒待機します
-    time.sleep(10)
+    time.sleep(1)
