@@ -14,19 +14,20 @@ LED7SEG[6] = 0b01000001
 LED7SEG[7] = 0b00011111
 LED7SEG[8] = 0b00000001
 LED7SEG[9] = 0b00001001
-ser = machine.Pin(16, machine.Pin.OUT)
-rclk = machine.Pin(17, machine.Pin.OUT)
-srclk = machine.Pin(18, machine.Pin.OUT)
 
-ser.value( 0 )
-rclk.value( 0 )
-srclk.value( 0 )
+def ledview(value):
+    ser = machine.Pin(16, machine.Pin.OUT)
+    rclk = machine.Pin(17, machine.Pin.OUT)
+    srclk = machine.Pin(18, machine.Pin.OUT)
 
-for j in range(10):
+    ser.value( 0 )
+    rclk.value( 0 )
+    srclk.value( 0 )
+
     for i in range(8):
         srclk.value( 0 )
         time.sleep_ms(10)
-        v = LED7SEG[j] & (1 << i)
+        v = LED7SEG[value] & (1 << i)
         ser.value( v )
         time.sleep_ms(10)
         srclk.value( 1 )
@@ -34,8 +35,9 @@ for j in range(10):
     rclk.value( 1 )
     time.sleep_ms(10)
     rclk.value( 0 )
-    time.sleep(1)
 
+ledview(7)
+time.sleep(1)
 print("END")
     
 
