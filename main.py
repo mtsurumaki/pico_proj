@@ -3,7 +3,7 @@
 import machine
 import time
 
-
+LED7SEG = [0] * 10
 LED7SEG[0] = 0b00000011
 LED7SEG[1] = 0b10011111
 LED7SEG[2] = 0b00100101
