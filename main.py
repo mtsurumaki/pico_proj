@@ -15,30 +15,47 @@ LED7SEG[7] = 0b00011111
 LED7SEG[8] = 0b00000001
 LED7SEG[9] = 0b00001001
 
-def ledview(value):
-    ser = machine.Pin(16, machine.Pin.OUT)
-    rclk = machine.Pin(17, machine.Pin.OUT)
-    srclk = machine.Pin(18, machine.Pin.OUT)
+# def init():
+ser = machine.Pin(16, machine.Pin.OUT)
+rclk = machine.Pin(17, machine.Pin.OUT)
+srclk = machine.Pin(18, machine.Pin.OUT)
 
+digit0 = machine.Pin(11, machine.Pin.OUT)
+digit1 = machine.Pin(12, machine.Pin.OUT)
+digit2 = machine.Pin(13, machine.Pin.OUT)
+digit3 = machine.Pin(14, machine.Pin.OUT)
+
+# value :表示する値
+# ser   :シリアルPIN
+# rclk  :ラッチPIN
+# srclk :クロックPIN
+# digit :表示桁の有効PIN
+def ledview(value, ser, rclk, srclk, digit):
     ser.value( 0 )
     rclk.value( 0 )
     srclk.value( 0 )
 
     for i in range(8):
         srclk.value( 0 )
-        time.sleep_ms(10)
         v = LED7SEG[value] & (1 << i)
         ser.value( v )
-        time.sleep_ms(10)
         srclk.value( 1 )
-        time.sleep_ms(10)
     rclk.value( 1 )
-    time.sleep_ms(10)
     rclk.value( 0 )
+    digit.value(1)
 
-ledview(7)
-time.sleep(1)
+for i in range(4000):
+    ledview(5, ser, rclk, srclk, digit0)
+    time.sleep_ms(2)
+    digit0.value(0)
+    ledview(6, ser, rclk, srclk, digit1)
+    time.sleep_ms(2)
+    digit1.value(0)
+    ledview(7, ser, rclk, srclk, digit2)
+    time.sleep_ms(2)
+    digit2.value(0)
+    ledview(8, ser, rclk, srclk, digit3)
+    time.sleep_ms(2)
+    digit3.value(0)
+
 print("END")
-    
-
-    
