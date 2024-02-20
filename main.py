@@ -30,32 +30,32 @@ digit3 = machine.Pin(14, machine.Pin.OUT)
 # rclk  :ラッチPIN
 # srclk :クロックPIN
 # digit :表示桁の有効PIN
-def ledview(value, ser, rclk, srclk, digit):
+# piriod:"."の有無
+def ledview(value, ser, rclk, srclk, digit, piriod):
     ser.value( 0 )
     rclk.value( 0 )
     srclk.value( 0 )
 
+    if piriod != False:
+        v = (LED7SEG[value] & 0b11111110)
+    else:
+        v = LED7SEG[value]
+        
     for i in range(8):
         srclk.value( 0 )
-        v = LED7SEG[value] & (1 << i)
-        ser.value( v )
+        bit = v & (1 << i)
+        ser.value(bit)
         srclk.value( 1 )
     rclk.value( 1 )
     rclk.value( 0 )
     digit.value(1)
+    time.sleep_ms(2)
+    digit.value(0)
 
 for i in range(4000):
-    ledview(5, ser, rclk, srclk, digit0)
-    time.sleep_ms(2)
-    digit0.value(0)
-    ledview(6, ser, rclk, srclk, digit1)
-    time.sleep_ms(2)
-    digit1.value(0)
-    ledview(7, ser, rclk, srclk, digit2)
-    time.sleep_ms(2)
-    digit2.value(0)
-    ledview(8, ser, rclk, srclk, digit3)
-    time.sleep_ms(2)
-    digit3.value(0)
+    ledview(5, ser, rclk, srclk, digit0, False)
+    ledview(6, ser, rclk, srclk, digit1, True)
+    ledview(7, ser, rclk, srclk, digit2, False)
+    ledview(8, ser, rclk, srclk, digit3, False)
 
 print("END")
