@@ -3,6 +3,7 @@
 import machine
 import time
 
+# CONSTデータ定義
 LED7SEG = [0] * 10
 LED7SEG[0] = 0b00000011
 LED7SEG[1] = 0b10011111
@@ -15,18 +16,7 @@ LED7SEG[7] = 0b00011111
 LED7SEG[8] = 0b00000001
 LED7SEG[9] = 0b00001001
 
-# def init():
-ser = machine.Pin(16, machine.Pin.OUT)
-rclk = machine.Pin(17, machine.Pin.OUT)
-srclk = machine.Pin(18, machine.Pin.OUT)
-
-digit0 = machine.Pin(11, machine.Pin.OUT)
-digit1 = machine.Pin(12, machine.Pin.OUT)
-digit2 = machine.Pin(13, machine.Pin.OUT)
-digit3 = machine.Pin(14, machine.Pin.OUT)
-
-cds = machine.ADC(0)
-
+# 74HC595で7セグメントLEDを表示する関数
 # value :表示する値
 # ser   :シリアルPIN
 # rclk  :ラッチPIN
@@ -54,6 +44,7 @@ def ledview(value, ser, rclk, srclk, digit, period):
     time.sleep_ms(2)
     digit.value(0)
 
+# CSDから電圧値を取得する関数
 # analogPin :アナログPIN
 # ret       :16bitの値から、電圧値に変換します
 def getcdsvolt(analogPin):
@@ -64,6 +55,18 @@ def getcdsvolt(analogPin):
 
     return (volRaw * unit)
 
+
+# def init():
+ser = machine.Pin(16, machine.Pin.OUT)
+rclk = machine.Pin(17, machine.Pin.OUT)
+srclk = machine.Pin(18, machine.Pin.OUT)
+
+digit0 = machine.Pin(11, machine.Pin.OUT)
+digit1 = machine.Pin(12, machine.Pin.OUT)
+digit2 = machine.Pin(13, machine.Pin.OUT)
+digit3 = machine.Pin(14, machine.Pin.OUT)
+
+cds = machine.ADC(0)
 
 for j in range(100):
     volt = getcdsvolt(cds)
